@@ -1,0 +1,40 @@
+# Build output
+build/
+build-*/
+out/
+cmake-build-*/
+
+# Qt / CMake generated
+*_autogen/
+moc_*.cpp
+qrc_*.cpp
+ui_*.h
+CMakeCache.txt
+CMakeFiles/
+CMakeUserPresets.json
+
+# MSVC
+*.obj
+*.pdb
+*.ilk
+*.exp
+*.lib
+*.user
+.vs/
+
+# Binaries and archives
+*.exe
+*.dll
+*.zip
+
+# IDE
+.idea/
+.vscode/
+*.autosave
+
+# OS
+Thumbs.db
+desktop.ini
+
+# Isolated development workspaces
+.worktrees/

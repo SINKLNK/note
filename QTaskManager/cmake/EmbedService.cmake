@@ -1,0 +1,2 @@
+file(TO_CMAKE_PATH "${SERVICE}" SERVICE)
+file(WRITE "${OUT}" "101 RCDATA \"${SERVICE}\"\n")

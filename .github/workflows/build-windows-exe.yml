@@ -1,0 +1,37 @@
+name: Windows exe
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  package:
+    name: Package QTaskManager.exe
+    runs-on: windows-latest
+    defaults:
+      run:
+        working-directory: QTaskManager
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Qt
+        uses: jurplel/install-qt-action@v4
+        with:
+          version: "6.8.3"
+          host: windows
+          target: desktop
+          arch: win64_msvc2022_64
+          archives: qtbase qtsvg
+          cache: true
+
+      - name: Package exe
+        shell: pwsh
+        run: ./packaging/package-exe.ps1
+
+      - name: Upload zip
+        uses: actions/upload-artifact@v4
+        with:
+          name: QTaskManager-win64
+          path: QTaskManager/packaging/output/QTaskManager-win64.zip
+          if-no-files-found: error
