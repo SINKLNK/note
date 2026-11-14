@@ -1,8 +1,0 @@
-# One line-ending policy for every git that touches this tree. Windows git
-# runs with core.autocrlf=true and checks files out as CRLF; git in WSL does
-# not, and then reports every one of those files as modified. Attributes
-# override autocrlf, so both see the same thing.
-* text=auto eol=lf
-
-*.ico binary
-*.png binary

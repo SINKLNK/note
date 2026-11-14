@@ -1,3 +1,0 @@
-// The executable's own icon, for Explorer, shortcuts and a pinned taskbar
-// button. The running window sets its icon separately (MainWindow).
-IDI_ICON1 ICON "app.ico"

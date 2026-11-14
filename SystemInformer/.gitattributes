@@ -1,0 +1,101 @@
+# Auto detect text files
+* text=auto working-tree-encoding=UTF-8
+
+# Custom for Visual Studio
+*.cs            diff=csharp
+*.sln           merge=union
+*.slnx          merge=union
+*.csproj        merge=union
+*.vbproj        merge=union
+*.fsproj        merge=union
+*.dbproj        merge=union
+
+# Project files
+*.appinstaller  text
+*.asm           text
+*.bat           -text diff
+*.build         text
+*.c             text
+*.cs            text
+*.cpp           text
+*.cppasm        text
+*.config        text
+*.cmake         text
+*.cmd           -text diff
+*.csproj        text
+*.def           text
+*.ddf           text
+*.dockerfile    text
+*.dockerignore  text
+*.editorconfig  text
+*.gitattributes text
+*.gitignore     text
+*.h             text
+*.hpp           text
+*.inc           text
+*.inf           text
+*.json          text
+*.map           text
+*.manifest      text
+*.mc            text
+*.md            text
+*.natvis        text
+*.ps1           text
+*.props         text
+*.pubxml        text
+*.resx          text
+*.rc            text
+*.ruleset       text
+*.sh            text eol=lf
+*.sln           text
+*.slnx          text
+*.symcryptasm   text
+*.targets       text
+*.txt           text
+*.vsconfig      text
+*.vcxitems      text
+*.vcxproj       text
+*.filters       text
+*.xml           text
+*.yml           text
+*.yaml          text
+
+**AUTHORS       text
+**COPYING       text
+**CHANGELOG     text
+**CODEOWNERS    text
+**LICENSE       text
+**LICENCE       text
+**README        text
+
+*.bmp           binary
+*.dll           binary
+*.exe           binary
+*.ico           binary
+*.lib           binary
+*.pdb           binary
+*.png           binary
+*.s             binary
+*.sys           binary
+*.zip           binary
+
+# svg standard require LF
+*.svg           text eol=lf
+
+# Standard to msysgit
+*.doc           diff=astextplain
+*.DOC           diff=astextplain
+*.docx          diff=astextplain
+*.DOCX          diff=astextplain
+*.dot           diff=astextplain
+*.DOT           diff=astextplain
+*.pdf           diff=astextplain
+*.PDF           diff=astextplain
+*.rtf           diff=astextplain
+*.RTF           diff=astextplain
+
+# Ignore files during repository export
+.gitattributes  export-ignore
+.gitignore      export-ignore
+.gitmodules     export-ignore
+.github         export-ignore

@@ -6,24 +6,15 @@ on:
 
 jobs:
   package:
-    name: Package QTaskManager.exe
+    name: Package SystemInformer.exe
     runs-on: windows-latest
+    timeout-minutes: 90
     defaults:
       run:
-        working-directory: QTaskManager
+        working-directory: SystemInformer
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
-      - name: Install Qt
-        uses: jurplel/install-qt-action@v4
-        with:
-          version: "6.8.3"
-          host: windows
-          target: desktop
-          arch: win64_msvc2022_64
-          archives: qtbase qtsvg
-          cache: true
 
       - name: Package exe
         shell: pwsh
@@ -32,6 +23,6 @@ jobs:
       - name: Upload zip
         uses: actions/upload-artifact@v4
         with:
-          name: QTaskManager-win64
-          path: QTaskManager/packaging/output/QTaskManager-win64.zip
+          name: SystemInformer-win64
+          path: SystemInformer/packaging/output/SystemInformer-win64.zip
           if-no-files-found: error
