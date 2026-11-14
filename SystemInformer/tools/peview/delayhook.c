@@ -1727,7 +1727,7 @@ HWND PhCreateWindowExHook(
         return NULL;
 
     // Re-point the class background brush when the theme changed since the class last had a window.
-    PhThemeWindowClassCreated(windowHandle);
+    PhUpdateWindowClassBackground(windowHandle);
 
     if (Parent == NULL)
     {

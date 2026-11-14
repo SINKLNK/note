@@ -38,6 +38,7 @@ static ULONG ListViewCount;
 static PH_CALLBACK_REGISTRATION LoggedRegistration;
 static BOOLEAN ListViewStateInitializing = FALSE;
 static BOOLEAN ListViewAutoScroll = FALSE;
+static HFONT WindowFont = NULL;
 
 VOID PhShowLogDialog(
     VOID

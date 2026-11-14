@@ -62,7 +62,7 @@ VOID PvStartPageFinishLoading(
     );
 
 BOOLEAN PvSelectFile(
-    VOID
+    _In_opt_ HWND WindowHandle
     );
 
 VOID PvAddRecentFile(

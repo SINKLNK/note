@@ -71,6 +71,36 @@ ULONG PhNetworkProviderFlagsMask = 0;
 static PPH_HASHTABLE PhpResolveCacheHashtable = NULL;
 static PH_QUEUED_LOCK PhpResolveCacheHashtableLock = PH_QUEUED_LOCK_INIT;
 
+typedef ULONG (WINAPI *_GetExtendedTcpTable)(
+    _Out_writes_bytes_opt_(*pdwSize) PVOID pTcpTable,
+    _Inout_ PULONG pdwSize,
+    _In_ BOOL bOrder,
+    _In_ ULONG ulAf,
+    _In_ TCP_TABLE_CLASS TableClass,
+    _In_ ULONG Reserved
+    );
+
+typedef ULONG (WINAPI *_GetExtendedUdpTable)(
+    _Out_writes_bytes_opt_(*pdwSize) PVOID pUdpTable,
+    _Inout_ PULONG pdwSize,
+    _In_ BOOL bOrder,
+    _In_ ULONG ulAf,
+    _In_ UDP_TABLE_CLASS TableClass,
+    _In_ ULONG Reserved
+    );
+
+typedef ULONG (WINAPI *_InternalGetBoundTcpEndpointTable)(
+    _Out_ _When_(return != 0, _Notnull_) PVOID* BoundTcpTable,
+    _In_ PVOID HeapHandle,
+    _In_opt_ ULONG HeapFlags
+    );
+
+typedef ULONG (WINAPI *_InternalGetBoundTcp6EndpointTable)(
+    _Out_ _When_(return != 0, _Notnull_) PVOID* BoundTcpTable,
+    _In_ PVOID HeapHandle,
+    _In_opt_ ULONG HeapFlags
+    );
+
 static _GetExtendedTcpTable GetExtendedTcpTable_I = NULL;
 static _GetExtendedUdpTable GetExtendedUdpTable_I = NULL;
 static _InternalGetBoundTcpEndpointTable GetBoundTcpEndpointTable_I = NULL;
