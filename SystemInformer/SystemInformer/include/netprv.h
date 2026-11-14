@@ -1,0 +1,450 @@
+/*
+ * Copyright (c) 2022 Winsider Seminars & Solutions, Inc.  All rights reserved.
+ *
+ * This file is part of System Informer.
+ *
+ * Authors:
+ *
+ *     wj32    2016
+ *     dmex    2017-2026
+ *
+ */
+
+#ifndef PH_NETPRV_H
+#define PH_NETPRV_H
+
+extern PPH_OBJECT_TYPE PhNetworkItemType;
+extern BOOLEAN PhEnableNetworkProviderResolve;
+extern BOOLEAN PhEnableNetworkBoundConnections;
+
+typedef enum _PH_NETWORK_PROVIDER_FLAG
+{
+    PH_NETWORK_PROVIDER_FLAG_HOSTNAME = 0x1,
+} PH_NETWORK_PROVIDER_FLAG;
+
+extern ULONG PhNetworkProviderFlagsMask;
+
+NTSTATUS PhNsiAllocateAndGetTable(
+    _In_ NSI_STORE Store,
+    _In_ PNPI_MODULEID ModuleId,
+    _In_ NSI_OBJECT_ID ObjectId,
+    _Outptr_opt_result_bytebuffer_maybenull_(*Count * KeyEntrySize) PVOID* KeyTable,
+    _In_ ULONG KeyEntrySize,
+    _Outptr_opt_result_bytebuffer_maybenull_(*Count * ReadWriteEntrySize) PVOID* ReadWriteTable,
+    _In_ ULONG ReadWriteEntrySize,
+    _Outptr_opt_result_bytebuffer_maybenull_(*Count * DynamicEntrySize) PVOID* DynamicTable,
+    _In_ ULONG DynamicEntrySize,
+    _Outptr_opt_result_bytebuffer_maybenull_(*Count * StaticEntrySize) PVOID* StaticTable,
+    _In_ ULONG StaticEntrySize,
+    _Out_ PULONG Count,
+    _In_ ULONG Unused
+    );
+
+VOID PhNsiFreeTable(
+    _Frees_ptr_opt_ PVOID KeyTable,
+    _Frees_ptr_opt_ PVOID ReadWriteTable,
+    _Frees_ptr_opt_ PVOID DynamicTable,
+    _Frees_ptr_opt_ PVOID StaticTable
+    );
+
+// Defined in mainwnd.c; netprv.c reads the elapsed time actually spanned by the last provider run. (dmex)
+extern PH_PROVIDER_REGISTRATION PhMwpNetworkProviderRegistration;
+
+// begin_phapppub
+#define PH_NETWORK_OWNER_INFO_SIZE 16
+
+typedef struct _PH_NETWORK_ITEM
+{
+    ULONG ProtocolType;
+    PH_IP_ENDPOINT LocalEndpoint;
+    PH_IP_ENDPOINT RemoteEndpoint;
+    MIB_TCP_STATE State;
+    HANDLE ProcessId;
+
+    PPH_STRING ProcessName;
+    ULONG_PTR ProcessIconIndex;
+    BOOLEAN ProcessIconValid;
+    PPH_STRING OwnerName;
+
+    LONG JustResolved;
+
+    PPH_STRING LocalAddressString;
+    WCHAR LocalPortString[PH_INT32_STR_LEN_1];
+    PPH_STRING RemoteAddressString;
+    WCHAR RemotePortString[PH_INT32_STR_LEN_1];
+    PPH_STRING LocalHostString;
+    PPH_STRING RemoteHostString;
+    PPH_STRING HvService;
+
+    LARGE_INTEGER CreateTime;
+    NSI_TCP_APPLIED_SETTING AppliedSetting;
+    ULONG ConnectionDuration;
+    ULONG SendWindowScale;
+    ULONG ReceiveWindowScale;
+    BOOLEAN NagleEnabled;
+    BOOLEAN SackEnabled;
+    ULONG LocalScopeId;
+    ULONG RemoteScopeId;
+
+    union
+    {
+        ULONG Flags;
+        struct
+        {
+            ULONG UnknownProcess : 1;
+            ULONG SubsystemProcess : 1;
+            ULONG DualMode : 1;
+            ULONG Spare : 26;
+            ULONG InvalidateHostname : 1;
+            ULONG LocalHostnameResolved : 1;
+            ULONG RemoteHostnameResolved : 1;
+        };
+    };
+
+    PPH_PROCESS_ITEM ProcessItem;
+    PH_HASH_ENTRY HashEntry;
+} PH_NETWORK_ITEM, *PPH_NETWORK_ITEM;
+// end_phapppub
+
+BOOLEAN PhNetworkProviderInitialization(
+    VOID
+    );
+
+PPH_NETWORK_ITEM PhCreateNetworkItem(
+    VOID
+    );
+
+// begin_phapppub
+PHAPPAPI
+PPH_NETWORK_ITEM
+NTAPI
+PhReferenceNetworkItem(
+    _In_ ULONG ProtocolType,
+    _In_ PPH_IP_ENDPOINT LocalEndpoint,
+    _In_ PPH_IP_ENDPOINT RemoteEndpoint,
+    _In_ HANDLE ProcessId
+    );
+
+PHAPPAPI
+VOID
+NTAPI
+PhEnumNetworkItems(
+    _Out_opt_ PPH_NETWORK_ITEM** NetworkItems,
+    _Out_ PULONG NumberOfNetworkItems
+    );
+
+PHAPPAPI
+VOID
+NTAPI
+PhEnumNetworkItemsByProcessId(
+    _In_opt_ HANDLE ProcessId,
+    _Out_opt_ PPH_NETWORK_ITEM** NetworkItems,
+    _Out_ PULONG NumberOfNetworkItems
+    );
+
+typedef struct _PH_NETWORK_CONNECTION
+{
+    ULONG ProtocolType;
+    PH_IP_ENDPOINT LocalEndpoint;
+    PH_IP_ENDPOINT RemoteEndpoint;
+    MIB_TCP_STATE State;
+    HANDLE ProcessId;
+    LARGE_INTEGER CreateTime;
+    ULONGLONG OwnerInfo[PH_NETWORK_OWNER_INFO_SIZE];
+    ULONG LocalScopeId; // Ipv6
+    ULONG RemoteScopeId; // Ipv6
+    TCP_CONNECTION_OFFLOAD_STATE OffloadState;
+    NSI_TCP_APPLIED_SETTING AppliedSetting;
+    ULONG ConnectionDuration;
+    ULONG SendWindowScale;
+    ULONG ReceiveWindowScale;
+    BOOLEAN NagleEnabled;
+    BOOLEAN SackEnabled;
+    BOOLEAN TimestampsEnabled;
+    BOOLEAN EcnEnabled;
+    BOOLEAN DualMode;
+    UCHAR QosFlowTag;
+    union
+    {
+        ULONG Flags; // NSI_UDP_OWNER_FLAGS
+        struct
+        {
+            ULONG SpecificPortBind : 1;
+            ULONG ReservedFlags : 31;
+        } DUMMYSTRUCTNAME;
+    } DUMMYUNIONNAME;
+} PH_NETWORK_CONNECTION, *PPH_NETWORK_CONNECTION;
+
+PHAPPAPI
+_Success_(return)
+BOOLEAN
+NTAPI
+PhGetNetworkConnections(
+    _Out_ PPH_NETWORK_CONNECTION *Connections,
+    _Out_ PULONG NumberOfConnections
+    );
+// end_phapppub
+
+VOID PhFlushNetworkItemResolveCache(
+    VOID
+    );
+
+//PPH_STRING PhGetHostNameFromAddress(
+//    _In_ PPH_IP_ADDRESS Address
+//    );
+
+_Function_class_(PH_PROVIDER_FUNCTION)
+VOID PhNetworkProviderUpdate(
+    _In_ PVOID Object
+    );
+
+// begin_phapppub
+PHAPPAPI
+PCPH_STRINGREF
+NTAPI
+PhGetProtocolTypeName(
+    _In_ ULONG ProtocolType
+    );
+
+PHAPPAPI
+PCPH_STRINGREF
+NTAPI
+PhGetTcpStateName(
+    _In_ ULONG State
+    );
+
+PHAPPAPI
+NTSTATUS
+PhGetPerTcpConnectionEStats(
+    _In_ PMIB_TCPROW Row,
+    _In_ TCP_ESTATS_TYPE EstatsType,
+    _Out_writes_bytes_opt_(RwSize) PVOID Rw,
+    _In_ ULONG RwVersion,
+    _In_ ULONG RwSize,
+    _Out_writes_bytes_opt_(RosSize) PVOID Ros,
+    _In_ ULONG RosVersion,
+    _In_ ULONG RosSize,
+    _Out_writes_bytes_opt_(RodSize) PVOID Rod,
+    _In_ ULONG RodVersion,
+    _In_ ULONG RodSize
+    );
+
+PHAPPAPI
+NTSTATUS
+PhGetPerTcp6ConnectionEStats(
+    _In_ PMIB_TCP6ROW Row,
+    _In_ TCP_ESTATS_TYPE EstatsType,
+    _Out_writes_bytes_opt_(RwSize) PVOID Rw,
+    _In_ ULONG RwVersion,
+    _In_ ULONG RwSize,
+    _Out_writes_bytes_opt_(RosSize) PVOID Ros,
+    _In_ ULONG RosVersion,
+    _In_ ULONG RosSize,
+    _Out_writes_bytes_opt_(RodSize) PVOID Rod,
+    _In_ ULONG RodVersion,
+    _In_ ULONG RodSize
+    );
+
+PHAPPAPI
+NTSTATUS
+PhSetPerTcpConnectionEStats(
+    _In_ PMIB_TCPROW Row,
+    _In_ TCP_ESTATS_TYPE EstatsType,
+    _In_reads_bytes_opt_(RwSize) PUCHAR Rw,
+    _In_ ULONG RwVersion,
+    _In_ ULONG RwSize,
+    _In_ ULONG Offset
+    );
+
+PHAPPAPI
+NTSTATUS
+PhSetPerTcp6ConnectionEStats(
+    _In_ PMIB_TCP6ROW Row,
+    _In_ TCP_ESTATS_TYPE EstatsType,
+    _In_reads_bytes_opt_(RwSize) PUCHAR Rw,
+    _In_ ULONG RwVersion,
+    _In_ ULONG RwSize,
+    _In_ ULONG Offset
+    );
+// end_phapppub
+
+PHAPPAPI
+BOOLEAN
+NTAPI
+PhIsUdpExemptPort(
+    _In_ ULONG Port
+    );
+
+// netsup
+
+// begin_phapppub
+PHAPPAPI
+NTSTATUS
+NTAPI
+PhSetTcpEntry(
+    _In_ PPH_NETWORK_ITEM NetworkItem
+    );
+// end_phapppub
+
+NTSTATUS
+PhGetExtendedTcpTable(
+    _Out_writes_bytes_opt_(*SizePointer) PVOID TcpTable,
+    _Inout_ PULONG SizePointer,
+    _In_ BOOL Order,
+    _In_ ULONG Family,
+    _In_ TCP_TABLE_CLASS TableClass,
+    _In_ ULONG Reserved
+    );
+
+NTSTATUS
+PhGetExtendedUdpTable(
+    _Out_writes_bytes_opt_(*SizePointer) PVOID UdpTable,
+    _Inout_ PULONG SizePointer,
+    _In_ BOOL Order,
+    _In_ ULONG Family,
+    _In_ UDP_TABLE_CLASS TableClass,
+    _In_ ULONG Reserved
+    );
+
+NTSTATUS
+NTAPI
+PhGetAdaptersAddresses(
+    _In_ ULONG Family,
+    _In_ ULONG Flags,
+    _Reserved_ PVOID Reserved,
+    _Out_writes_bytes_opt_(*SizePointer) PIP_ADAPTER_ADDRESSES AdapterAddresses,
+    _Inout_ PULONG SizePointer
+    );
+
+NTSTATUS
+NTAPI
+PhGetNetworkParams(
+    _Out_writes_bytes_opt_(*SizePointer) PFIXED_INFO FixedInfo,
+    _Inout_ PULONG SizePointer
+    );
+
+NTSTATUS
+NTAPI
+PhCancelMibChangeNotify2(
+    _In_ HANDLE NotificationHandle
+    );
+
+NTSTATUS
+WINAPI
+PhInternalGetBoundTcpEndpointTable(
+    _Outptr_ PMIB_TCPTABLE2* BoundTcpTable
+    );
+
+NTSTATUS
+WINAPI
+PhInternalGetBoundTcp6EndpointTable(
+    _Outptr_ PMIB_TCP6TABLE2* BoundTcpTable
+    );
+
+NTSTATUS
+NTAPI
+PhNotifyIpInterfaceChange(
+    _In_ ADDRESS_FAMILY Family,
+    _In_ PIPINTERFACE_CHANGE_CALLBACK Callback,
+    _In_opt_ PVOID CallerContext,
+    _In_ BOOLEAN InitialNotification,
+    _Inout_ PHANDLE NotificationHandle
+    );
+
+NTSTATUS
+NTAPI
+PhParseNetworkString(
+    _In_ PCWSTR NetworkString,
+    _In_ ULONG Types,
+    _Out_opt_ PNET_ADDRESS_INFO AddressInfo,
+    _Out_opt_ PUSHORT PortNumber,
+    _Out_opt_ PUCHAR PrefixLength
+    );
+
+NTSTATUS
+NTAPI
+PhNhGetInterfaceNameFromDeviceGuid(
+    _In_ PGUID DeviceGuid,
+    _Out_writes_(InterfaceDescriptionLength) PWCHAR InterfaceDescription,
+    _Inout_ PULONG InterfaceDescriptionLength,
+    _In_ BOOLEAN Cache,
+    _In_ BOOLEAN Refresh
+    );
+
+NTSTATUS
+NTAPI
+PhGetIpStatistics(
+    _Out_ PMIB_IPSTATS Statistics
+    );
+
+NTSTATUS
+NTAPI
+PhGetIpAddrTable(
+    _Out_writes_bytes_opt_(*SizePointer) PMIB_IPADDRTABLE IpAddrTable,
+    _Inout_ PULONG SizePointer,
+    _In_ BOOLEAN Order
+    );
+
+NTSTATUS
+NTAPI
+PhRegisterInterfaceTimestampConfigChange(
+    _In_ PINTERFACE_TIMESTAMP_CONFIG_CHANGE_CALLBACK Callback,
+    _In_opt_ PVOID CallerContext,
+    _Out_ HIFTIMESTAMPCHANGE *NotificationHandle
+    );
+
+VOID
+NTAPI
+PhUnregisterInterfaceTimestampConfigChange(
+    _In_ HIFTIMESTAMPCHANGE NotificationHandle
+    );
+
+NTSTATUS
+NTAPI
+PhGetInterfaceHandle(
+    _In_ const NET_LUID *InterfaceLuid,
+    _Out_ PHANDLE InterfaceHandle
+    );
+
+NTSTATUS
+NTAPI
+PhConvertNdisStatusToError(
+    _In_ NTSTATUS Status
+    );
+
+BOOLEAN
+NTAPI
+PhCancelIPChangeNotify(
+    _In_ LPOVERLAPPED Overlapped
+    );
+
+NTSTATUS
+NTAPI
+PhAllocateAndGetInterfaceInfoFromStack(
+    _Outptr_ PIP_INTERFACE_NAME_INFO *InterfaceInfo,
+    _Out_ PULONG SizePointer,
+    _In_ BOOLEAN Order
+    );
+
+NTSTATUS
+NTAPI
+PhAllocateAndGetIpAddrTableFromStack(
+    _Outptr_ PMIB_IPADDRTABLE *IpAddrTable,
+    _Out_ PULONG SizePointer,
+    _In_ BOOLEAN Order
+    );
+
+NTSTATUS
+NTAPI
+PhCloseCompartment(
+    _In_ HANDLE CompartmentHandle
+    );
+
+NTSTATUS
+NTAPI
+PhCloseGetIPPhysicalInterfaceForDestination(
+    _Inout_ PHANDLE Handle
+    );
+
+#endif
+

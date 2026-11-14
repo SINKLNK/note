@@ -1,0 +1,28 @@
+name: Windows exe
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  package:
+    name: Package SystemInformer.exe
+    runs-on: windows-latest
+    timeout-minutes: 90
+    defaults:
+      run:
+        working-directory: SystemInformer
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Package exe
+        shell: pwsh
+        run: ./packaging/package-exe.ps1
+
+      - name: Upload zip
+        uses: actions/upload-artifact@v4
+        with:
+          name: SystemInformer-win64
+          path: SystemInformer/packaging/output/SystemInformer-win64.zip
+          if-no-files-found: error
