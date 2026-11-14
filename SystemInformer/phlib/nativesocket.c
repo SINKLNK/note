@@ -1951,7 +1951,7 @@ NTSTATUS PhAfdCreateSocket(
     ea.EaNameLength = sizeof(AfdOpenPacket) - sizeof(ANSI_NULL);
     ea.EaValueLength = sizeof(AFD_OPEN_PACKET);
     RtlCopyMemory(ea.EaName, AfdOpenPacket, sizeof(AfdOpenPacket));
-    ea.OpenPacket.__f.EndpointFlags = EndpointFlags;
+    ea.OpenPacket.Flags = (LONG)EndpointFlags;
     ea.OpenPacket.GroupID = 0;
     ea.OpenPacket.AddressFamily = AddressFamily;
     ea.OpenPacket.SocketType = SocketType;
