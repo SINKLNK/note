@@ -1621,23 +1621,23 @@ PPH_STRING EtFwGetSidFullNameCachedSlow(
 
 VOID EtFwDrawCountryIcon(
     _In_ HDC hdc,
-    _In_ RECT rect,
+    _In_ PRECT rect,
     _In_ LONG Index
     );
 
 VOID EtFwShowPingWindow(
     _In_ HWND ParentWindowHandle,
-    _In_ PH_IP_ENDPOINT Endpoint
+    _In_ PPH_IP_ENDPOINT Endpoint
     );
 
 VOID EtFwShowTracerWindow(
     _In_ HWND ParentWindowHandle,
-    _In_ PH_IP_ENDPOINT Endpoint
+    _In_ PPH_IP_ENDPOINT Endpoint
     );
 
 VOID EtFwShowWhoisWindow(
     _In_ HWND ParentWindowHandle,
-    _In_ PH_IP_ENDPOINT Endpoint
+    _In_ PPH_IP_ENDPOINT Endpoint
     );
 
 //VOID EtFwShowEventProperties(

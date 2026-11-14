@@ -797,7 +797,7 @@ VOID ShowPingWindow(
 
 VOID ShowPingWindowFromAddress(
     _In_ HWND ParentWindowHandle,
-    _In_ PH_IP_ENDPOINT RemoteEndpoint
+    _In_ PPH_IP_ENDPOINT RemoteEndpoint
     )
 {
     PNETWORK_PING_CONTEXT context;
@@ -808,16 +808,16 @@ VOID ShowPingWindowFromAddress(
     memcpy_s(
         &context->RemoteEndpoint,
         sizeof(context->RemoteEndpoint),
-        &RemoteEndpoint,
-        sizeof(RemoteEndpoint)
+        RemoteEndpoint,
+        sizeof(*RemoteEndpoint)
         );
 
-    if (RemoteEndpoint.Address.Type == PH_NETWORK_TYPE_IPV4)
+    if (RemoteEndpoint->Address.Type == PH_NETWORK_TYPE_IPV4)
     {
         ULONG remoteAddressStringLength = RTL_NUMBER_OF(context->RemoteAddressString);
 
         if (NT_SUCCESS(PhIpv4AddressToString(
-            &RemoteEndpoint.Address.InAddr,
+            &RemoteEndpoint->Address.InAddr,
             0,
             context->RemoteAddressString,
             &remoteAddressStringLength
@@ -831,7 +831,7 @@ VOID ShowPingWindowFromAddress(
         ULONG remoteAddressStringLength = RTL_NUMBER_OF(context->RemoteAddressString);
 
         if (NT_SUCCESS(RtlIpv6AddressToStringEx(
-            &RemoteEndpoint.Address.In6Addr,
+            &RemoteEndpoint->Address.In6Addr,
             0,
             0,
             context->RemoteAddressString,

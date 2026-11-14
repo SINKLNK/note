@@ -366,6 +366,47 @@ VOID WeSetWindowToDpiForTesting(
         NtUserForceWindowToDpiForTest_I(WindowHandle, WindowDPI);
 }
 
+VOID WeShowWindowDpiDialog(
+    _In_ HWND ParentWindowHandle,
+    _In_ HWND TargetWindowHandle
+    )
+{
+    static const PCWSTR choices[] =
+    {
+        L"96",
+        L"120",
+        L"144",
+        L"168",
+        L"192",
+        L"240",
+        L"288"
+    };
+    PPH_STRING selectedChoice = NULL;
+    LONG dpi;
+
+    if (!PhChoiceDialog(
+        ParentWindowHandle,
+        L"DPI",
+        L"Select a DPI value for this window.",
+        choices,
+        RTL_NUMBER_OF(choices),
+        NULL,
+        0,
+        &selectedChoice,
+        NULL,
+        NULL
+        ))
+    {
+        return;
+    }
+
+    dpi = _wtol(selectedChoice->Buffer);
+    PhDereferenceObject(selectedChoice);
+
+    if (dpi > 0)
+        WeSetWindowToDpiForTesting(TargetWindowHandle, dpi);
+}
+
 NTSTATUS WeDestroyRemoteWindow(
     _In_ HWND TargetWindow,
     _In_ HANDLE ProcessId

@@ -481,7 +481,7 @@ BOOLEAN NTAPI TracertTreeNewCallback(
 
                 if (node->CountryIconIndex != INT_ERROR)
                 {
-                    DrawCountryIcon(hdc, rect, node->CountryIconIndex);
+                    DrawCountryIcon(hdc, &rect, node->CountryIconIndex);
                     rect.left += 16 + 2;
                 }
 

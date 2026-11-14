@@ -11,6 +11,7 @@
 
 #include "onlnchk.h"
 
+BOOLEAN OnlineChecksPreEnableUi = FALSE;
 static BOOLEAN OnlineChecksRestartRequired = FALSE;
 static BOOLEAN OptionsHybridKeyConfigured = FALSE;
 static BOOLEAN OptionsVirusTotalKeyConfigured = FALSE;

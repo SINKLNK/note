@@ -1377,8 +1377,8 @@ VOID ShowWhoisWindowFromAddress(
     memcpy_s(
         &context->RemoteEndpoint,
         sizeof(context->RemoteEndpoint),
-        &RemoteEndpoint,
-        sizeof(RemoteEndpoint)
+        RemoteEndpoint,
+        sizeof(*RemoteEndpoint)
         );
 
     PhCreateThread2(NetworkWhoisDialogThreadStart, context);

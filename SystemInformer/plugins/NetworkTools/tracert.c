@@ -297,7 +297,7 @@ VOID TracertQueueHostLookup(
         }
 
         if (LookupSockInAddr6CountryCode(
-            sockAddrIn6,
+            &sockAddrIn6,
             &remoteCountryCode,
             &remoteCountryName
             ))
@@ -752,7 +752,7 @@ VOID TracertMenuActionCallback(
                     )))
                 {
                     remoteEndpoint.Address.Type = PH_NETWORK_TYPE_IPV4;
-                    ShowPingWindowFromAddress(Context->WindowHandle, remoteEndpoint);
+                    ShowPingWindowFromAddress(Context->WindowHandle, &remoteEndpoint);
                     break;
                 }
 
@@ -764,7 +764,7 @@ VOID TracertMenuActionCallback(
                     )))
                 {
                     remoteEndpoint.Address.Type = PH_NETWORK_TYPE_IPV6;
-                    ShowPingWindowFromAddress(Context->WindowHandle, remoteEndpoint);
+                    ShowPingWindowFromAddress(Context->WindowHandle, &remoteEndpoint);
                     break;
                 }
             }
@@ -787,7 +787,7 @@ VOID TracertMenuActionCallback(
                     )))
                 {
                     remoteEndpoint.Address.Type = PH_NETWORK_TYPE_IPV4;
-                    ShowTracertWindowFromAddress(Context->WindowHandle, remoteEndpoint);
+                    ShowTracertWindowFromAddress(Context->WindowHandle, &remoteEndpoint);
                     break;
                 }
 
@@ -799,7 +799,7 @@ VOID TracertMenuActionCallback(
                     )))
                 {
                     remoteEndpoint.Address.Type = PH_NETWORK_TYPE_IPV6;
-                    ShowTracertWindowFromAddress(Context->WindowHandle, remoteEndpoint);
+                    ShowTracertWindowFromAddress(Context->WindowHandle, &remoteEndpoint);
                     break;
                 }
             }
@@ -822,7 +822,7 @@ VOID TracertMenuActionCallback(
                     )))
                 {
                     remoteEndpoint.Address.Type = PH_NETWORK_TYPE_IPV4;
-                    ShowWhoisWindowFromAddress(Context->WindowHandle, remoteEndpoint);
+                    ShowWhoisWindowFromAddress(Context->WindowHandle, &remoteEndpoint);
                     break;
                 }
 
@@ -834,7 +834,7 @@ VOID TracertMenuActionCallback(
                     )))
                 {
                     remoteEndpoint.Address.Type = PH_NETWORK_TYPE_IPV6;
-                    ShowWhoisWindowFromAddress(Context->WindowHandle, remoteEndpoint);
+                    ShowWhoisWindowFromAddress(Context->WindowHandle, &remoteEndpoint);
                     break;
                 }
             }
@@ -1289,7 +1289,7 @@ VOID ShowTracertWindow(
 
 VOID ShowTracertWindowFromAddress(
     _In_ HWND ParentWindowHandle,
-    _In_ PH_IP_ENDPOINT RemoteEndpoint
+    _In_ PPH_IP_ENDPOINT RemoteEndpoint
     )
 {
     PNETWORK_TRACERT_CONTEXT context;
@@ -1301,16 +1301,16 @@ VOID ShowTracertWindowFromAddress(
     memcpy_s(
         &context->RemoteEndpoint,
         sizeof(context->RemoteEndpoint),
-        &RemoteEndpoint,
-        sizeof(RemoteEndpoint)
+        RemoteEndpoint,
+        sizeof(*RemoteEndpoint)
         );
 
-    if (RemoteEndpoint.Address.Type == PH_NETWORK_TYPE_IPV4)
+    if (RemoteEndpoint->Address.Type == PH_NETWORK_TYPE_IPV4)
     {
         ULONG remoteAddressStringLength = RTL_NUMBER_OF(context->RemoteAddressString);
 
         if (NT_SUCCESS(PhIpv4AddressToString(
-            &RemoteEndpoint.Address.InAddr,
+            &RemoteEndpoint->Address.InAddr,
             0,
             context->RemoteAddressString,
             &remoteAddressStringLength
@@ -1324,7 +1324,7 @@ VOID ShowTracertWindowFromAddress(
         ULONG remoteAddressStringLength = RTL_NUMBER_OF(context->RemoteAddressString);
 
         if (NT_SUCCESS(PhIpv6AddressToString(
-            &RemoteEndpoint.Address.In6Addr,
+            &RemoteEndpoint->Address.In6Addr,
             0,
             0,
             context->RemoteAddressString,
