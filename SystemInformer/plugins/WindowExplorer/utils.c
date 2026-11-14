@@ -371,7 +371,7 @@ VOID WeShowWindowDpiDialog(
     _In_ HWND TargetWindowHandle
     )
 {
-    static const PCWSTR choices[] =
+    static PCWSTR choices[] =
     {
         L"96",
         L"120",

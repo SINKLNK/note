@@ -1051,7 +1051,7 @@ VOID NetworkProviderUpdatedCallback(
             previousVarianceRtt != extension->VarianceRtt
             )
         {
-            NetworkProviderNotifyItemModified(networkItem);
+            PhInvokeCallback(PhGetGeneralCallback(GeneralCallbackNetworkProviderModifiedEvent), networkItem);
         }
     }
 }
