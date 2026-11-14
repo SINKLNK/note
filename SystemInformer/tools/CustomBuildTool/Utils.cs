@@ -1457,6 +1457,9 @@ namespace CustomBuildTool
         public static bool WriteTextIfChanged(string FileName, Action<TextWriter> Write, Action BeforeReplace = null, Func<bool> ShouldReplace = null, StringComparison Comparison = StringComparison.OrdinalIgnoreCase)
         {
             string temporaryFile = FileName + "." + Guid.NewGuid().ToString("N") + ".tmp";
+            string directory = Path.GetDirectoryName(FileName);
+            if (!string.IsNullOrEmpty(directory))
+                Directory.CreateDirectory(directory);
 
             try
             {
