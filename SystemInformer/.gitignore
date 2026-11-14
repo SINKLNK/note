@@ -155,6 +155,9 @@ repomix-output.*
 build/output/
 plugins-extra/
 sdk/
+!SystemInformer/sdk/
+!SystemInformer/sdk/phdk.h
+!SystemInformer/sdk/readme.txt
 target/
 tools/thirdparty/vcpkg_installed/*
 
