@@ -708,7 +708,8 @@
     <UsingTask TaskName="MARMASM" TaskFactory="XamlTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll" Override="true">
         <Task>$(VCTargetsPath)\BuildCustomizations\marmasm.xml</Task>
     </UsingTask>
+    <!-- /Z7 keeps debug info in the objects, so a compiler PDB is not produced. -->
     <Target Name="CopyThirdPartyPdb" AfterTargets="Build">
-        <Copy SourceFiles="$(OutDir)thirdparty.pdb" DestinationFolder="$(SystemInformerRoot)bin\$(Configuration)$(PlatformArchitecture)\" />
+        <Copy SourceFiles="$(OutDir)thirdparty.pdb" DestinationFolder="$(SystemInformerRoot)bin\$(Configuration)$(PlatformArchitecture)\" Condition="Exists('$(OutDir)thirdparty.pdb')" />
     </Target>
 </Project>
