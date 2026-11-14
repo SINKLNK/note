@@ -1,0 +1,83 @@
+tux-manager (1.0.8) unstable; urgency=medium
+
+  * Add multilingual UI support and Simplified Chinese translations
+  * Improve process view and performance tab
+  * Add Intel GPU telemetry fallbacks and openSUSE RPM packaging support
+
+ -- Petr Bena <petr@bena.rocks>  Sun, 20 Sep 2026 12:00:00 +0200
+
+tux-manager (1.0.7) unstable; urgency=medium
+
+  * Performance side panel is now resizable
+  * Implemented compressed memory support
+  * Visual improvements of process tree
+  * Refactored run new task
+
+ -- Petr Bena <petr@bena.rocks>  Sun, 31 May 2026 12:00:00 +0200
+
+tux-manager (1.0.6) unstable; urgency=medium
+
+  * Memory view now shows compressed memory when zswap is used
+  * Implemented Intel GPU backend
+
+ -- Petr Bena <petr@bena.rocks>  Sun, 04 May 2026 12:00:00 +0200
+
+tux-manager (1.0.5) unstable; urgency=medium
+
+  * Perf -> Network:
+    - Show all IPv6 addrs instead of just the first one
+    - Implemented toggle between bytes vs bits for NICs
+  * UI: minor visual fixes of services table
+  * Implemented ability to reorder performance widgets in side panel
+  * Expose more NVML metrics: freq and power usage
+  * Support for AMD GPUs via AMDSMI
+
+ -- Petr Bena <petr@bena.rocks>  Wed, 22 Apr 2026 12:00:00 +0200
+
+tux-manager (1.0.4) unstable; urgency=medium
+
+  * Services control (via d-bus / systemctl)
+  * Option to display stats for each swap device separately
+  * Dynamically load / unload swap devices as they are added / disabled
+  * Notify user when they try to send signal to processes owned by different UID
+  * Run new task option
+  * Open terminal option
+  * New icon
+  * IO metrics for processes
+  * Updated virtual GPU / CD driver blacklist
+
+ -- Petr Bena <petr@bena.rocks>  Mon, 13 Apr 2026 12:00:00 +0200
+
+tux-manager (1.0.3) unstable; urgency=medium
+
+  * Performance improvements (app uses less RAM and CPU now)
+  * Fixed various visual glitches (graphs now look better)
+  * Fixed disk enumeration logic
+
+ -- Petr Bena <petr@bena.rocks>  Fri, 10 Apr 2026 21:00:00 +0100
+
+tux-manager (1.0.2) unstable; urgency=medium
+
+  * Improved context menu (copy, confirmations)
+  * Show if running as root in title
+  * Implemented tree view in processes list
+  * Persistent table header settings
+  * Added 15s interval
+  * Moved interval settings to context menus
+
+ -- Petr Bena <petr@bena.rocks>  Tue, 08 Apr 2026 14:00:00 +0100
+
+tux-manager (1.0.1) unstable; urgency=medium
+
+  * New color scheme dialog allowing users to override colors
+  * Improved support for light theme
+  * Improved services tab (faster refresh and search)
+  * Support for DRM GPUs
+
+ -- Petr Bena <petr@bena.rocks>  Tue, 03 Mar 2026 23:35:00 +0100
+
+tux-manager (1.0.0) unstable; urgency=medium
+
+  * Rename project and package to Tux Manager.
+
+ -- Petr Bena <petr@bena.rocks>  Tue, 03 Mar 2026 23:35:00 +0100

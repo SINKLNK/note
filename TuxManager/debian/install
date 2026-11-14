@@ -1,0 +1,3 @@
+debian/build/tux-manager usr/bin/
+src/tux_manager_icon.svg usr/share/pixmaps/
+packaging/data/io.github.benapetr.TuxManager.desktop usr/share/applications/

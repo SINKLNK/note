@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>CpuDetailWidget</class>
+ <widget class="QWidget" name="CpuDetailWidget">
+  <property name="geometry">
+   <rect><x>0</x><y>0</y><width>640</width><height>520</height></rect>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout" stretch="0,1,0,0">
+   <property name="leftMargin"><number>12</number></property>
+   <property name="topMargin"><number>10</number></property>
+   <property name="rightMargin"><number>12</number></property>
+   <property name="bottomMargin"><number>10</number></property>
+   <property name="spacing"><number>6</number></property>
+
+   <!-- Header row: title + model name + utilisation % -->
+   <item>
+    <layout class="QHBoxLayout" name="headerLayout" stretch="1,0">
+     <item>
+      <layout class="QVBoxLayout" name="headerLabelLayout">
+       <property name="spacing"><number>2</number></property>
+       <item>
+        <widget class="QLabel" name="titleLabel">
+         <property name="text"><string>CPU</string></property>
+         <property name="styleSheet"><string>font-size: 18pt; font-weight: bold;</string></property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="modelNameLabel">
+         <property name="text"><string></string></property>
+         <property name="styleSheet"><string>font-size: 8pt;</string></property>
+         <property name="wordWrap"><bool>true</bool></property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <widget class="QLabel" name="utilizationLabel">
+       <property name="text"><string>0%</string></property>
+       <property name="alignment"><set>Qt::AlignRight|Qt::AlignVCenter</set></property>
+       <property name="styleSheet"><string>font-size: 18pt;</string></property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+
+   <!-- Graph container — CpuGraphArea is inserted here at runtime -->
+   <item>
+    <widget class="QWidget" name="graphAreaContainer">
+     <property name="minimumHeight"><number>180</number></property>
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+       <horstretch>0</horstretch>
+       <verstretch>1</verstretch>
+      </sizepolicy>
+     </property>
+    </widget>
+   </item>
+
+   <!-- Time axis labels -->
+   <item>
+    <layout class="QHBoxLayout" name="timeAxisLayout">
+     <item>
+      <widget class="QLabel" name="timeLeftLabel">
+       <property name="text"><string>60 seconds</string></property>
+       <property name="styleSheet"><string>font-size: 8pt;</string></property>
+      </widget>
+     </item>
+     <item>
+      <spacer>
+       <property name="orientation"><enum>Qt::Horizontal</enum></property>
+       <property name="sizeHint" stdset="0"><size><width>40</width><height>0</height></size></property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QLabel" name="timeRightLabel">
+       <property name="text"><string>0</string></property>
+       <property name="alignment"><set>Qt::AlignRight|Qt::AlignVCenter</set></property>
+       <property name="styleSheet"><string>font-size: 8pt;</string></property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+
+   <!-- Stats grid: 3 columns of label/value pairs -->
+   <item>
+    <layout class="QGridLayout" name="statsGrid">
+     <property name="horizontalSpacing"><number>20</number></property>
+     <property name="verticalSpacing"><number>6</number></property>
+
+     <!-- Row 0 -->
+     <item row="0" column="0"><widget class="QLabel"><property name="text"><string>Utilization</string></property><property name="styleSheet"><string></string></property></widget></item>
+     <item row="0" column="1"><widget class="QLabel" name="statUtilValue"><property name="text"><string>0%</string></property></widget></item>
+     <item row="0" column="2"><widget class="QLabel"><property name="text"><string>Speed</string></property><property name="styleSheet"><string></string></property></widget></item>
+     <item row="0" column="3"><widget class="QLabel" name="statSpeedValue"><property name="text"><string>—</string></property></widget></item>
+
+     <!-- Row 1 -->
+     <item row="1" column="0"><widget class="QLabel"><property name="text"><string>Processes</string></property><property name="styleSheet"><string></string></property></widget></item>
+     <item row="1" column="1"><widget class="QLabel" name="statProcessesValue"><property name="text"><string>—</string></property></widget></item>
+     <item row="1" column="2"><widget class="QLabel"><property name="text"><string>Threads</string></property><property name="styleSheet"><string></string></property></widget></item>
+     <item row="1" column="3"><widget class="QLabel" name="statThreadsValue"><property name="text"><string>—</string></property></widget></item>
+
+     <!-- Row 2 -->
+     <item row="2" column="0"><widget class="QLabel"><property name="text"><string>Uptime</string></property><property name="styleSheet"><string></string></property></widget></item>
+     <item row="2" column="1"><widget class="QLabel" name="statUptimeValue"><property name="text"><string>—</string></property></widget></item>
+     <item row="2" column="2"><widget class="QLabel"><property name="text"><string>Logical processors</string></property><property name="styleSheet"><string></string></property></widget></item>
+     <item row="2" column="3"><widget class="QLabel" name="statLogicalCpusValue"><property name="text"><string>—</string></property></widget></item>
+
+     <!-- Row 3 -->
+     <item row="3" column="0"><widget class="QLabel"><property name="text"><string>Virtual machine</string></property><property name="styleSheet"><string></string></property></widget></item>
+     <item row="3" column="1"><widget class="QLabel" name="statVmValue"><property name="text"><string>—</string></property></widget></item>
+     <item row="3" column="2"><widget class="QLabel"><property name="text"><string>Temperature</string></property><property name="styleSheet"><string></string></property></widget></item>
+     <item row="3" column="3"><widget class="QLabel" name="statTempValue"><property name="text"><string>—</string></property></widget></item>
+
+    </layout>
+   </item>
+
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
