@@ -13,7 +13,7 @@ if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 cmd /c "build\build_release.cmd"
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
-$release = Join-Path $Root "build\output\Release64"
+$release = Join-Path $Root "bin\Release64"
 $exe = Join-Path $release "SystemInformer.exe"
 if (-not (Test-Path $exe)) {
     throw "SystemInformer.exe was not produced at $exe"
